@@ -3,13 +3,19 @@ public class Obstacle {
     private String name;
     private int damage;
     private int health;
+    private int award;
+    private int originalHealth;
 
-    public Obstacle(int id, String name, int damage, int health) {
+    public Obstacle(int id, String name, int damage, int health,int award) {
         this.id = id;
         this.name = name;
         this.damage = damage;
         this.health = health;
+        this.originalHealth=health;
+        this.award=award;
     }
+
+
 
     public int getId() {
         return id;
@@ -41,5 +47,21 @@ public class Obstacle {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public int getAward() {
+        return award;
+    }
+
+    public int getOriginalHealth() {
+        return originalHealth;
+    }
+
+    public void setOriginalHealth(int originalHealth) {
+        this.originalHealth = originalHealth;
+    }
+
+    public void setAward(int award) {
+        this.award = award;
     }
 }
