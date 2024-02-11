@@ -18,20 +18,40 @@ public class Game {
             System.out.println();
             System.out.println("---------BÖLGELER---------");
             System.out.println("1- Güvenli Ev");
-            System.out.println("2- Mağaza");
+            System.out.println("2- Eşya Dükkanı");
+            System.out.println("3- Mağara(Zombi)");
+            System.out.println("4- Orman(Vampir)");
+            System.out.println("5- Nehir(Ayı)");
+            System.out.println("0- Oyunu Sonlandır");
             System.out.println();
             System.out.println("Lutfen Gitmek İstediğiniz Bölgeyi Seçiniz ");
             System.out.println();
             int selectLoc = input.nextInt();;
             switch (selectLoc){
+                case 0:
+                    location=null;
+                    break;
                 case 1:
                     location = new SafeHouse(player);
                     break;
                 case 2:
                     location = new ToolStore(player);
                     break;
+                case 3:
+                    location=new Cave(player);
+                    break;
+                case 4:
+                    location=new Forest(player);
+                    break;
+                case 5:
+                    location=new River(player);
+                    break;
                 default:
-                    location = new SafeHouse(player);
+                    System.out.println("Lütfen Geçerli Bir Giriş Yapiniz.");
+            }
+            if (location==null){
+                System.out.println("Oyun Bitti.");
+                break;
             }
             if (!location.onLocation()){
                 System.out.println("GAME OVER !");
