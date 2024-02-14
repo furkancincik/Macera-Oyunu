@@ -26,7 +26,11 @@ public class Game {
             System.out.println();
             System.out.println("Lutfen Gitmek İstediğiniz Bölgeyi Seçiniz ");
             System.out.println();
+
             int selectLoc = input.nextInt();;
+
+            input.nextLine();//buffer clearing
+
             switch (selectLoc){
                 case 0:
                     location=null;
@@ -53,7 +57,7 @@ public class Game {
                 System.out.println("Oyun Bitti.");
                 break;
             }
-            if (!location.onLocation()){
+            else if (!location.onLocation()){
                 System.out.println("GAME OVER !");
                 break;
             }
