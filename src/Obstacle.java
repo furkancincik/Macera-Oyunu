@@ -5,14 +5,16 @@ public class Obstacle {
     private int health;
     private int award;
     private int originalHealth;
+    private Award batlAward;
 
-    public Obstacle(int id, String name, int damage, int health,int award) {
+    public Obstacle(int id, String name, int damage, int health,int award,Award batlAward) {
         this.id = id;
         this.name = name;
         this.damage = damage;
         this.health = health;
         this.originalHealth=health;
         this.award=award;
+        this.batlAward=batlAward;
     }
 
 
@@ -66,5 +68,13 @@ public class Obstacle {
 
     public void setAward(int award) {
         this.award = award;
+    }
+
+    public Award getBatlAward() {
+        return batlAward;
+    }
+
+    public void setBatlAward(Award batlAward) {
+        this.batlAward = batlAward;
     }
 }

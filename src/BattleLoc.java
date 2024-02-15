@@ -47,9 +47,10 @@ public abstract class BattleLoc extends Location {
 
             if (getStartingObject() == this.getPlayer()) {
                 //player başlar
+                String selectCombat;
                 while (this.getPlayer().getHealth() > 0 && this.getObstacle().getHealth() > 0) {
                     System.out.println("<V>ur veya <K>aç");
-                    String selectCombat = input.nextLine().toUpperCase();
+                    selectCombat = input.nextLine().toUpperCase();
                     if (selectCombat.equals("V")) {
                         System.out.println("Siz Vurdunuz !");
                         this.getObstacle().setHealth(this.obstacle.getHealth() - this.getPlayer().getTotalDamage());
@@ -78,7 +79,7 @@ public abstract class BattleLoc extends Location {
                 }
                 //bitişi
             } else {
-                //obstacle başlar
+                //ilk obstacle  başlar
 
                 while (this.getPlayer().getHealth() > 0 && this.getObstacle().getHealth() > 0) {
                     System.out.println("Canavar size Vurdu !");
@@ -86,20 +87,27 @@ public abstract class BattleLoc extends Location {
                     if (obstacleDamage < 0) {
                         obstacleDamage = 0;
                     }
-                    this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
-                    afterHit();
                     System.out.println("<V>ur veya <K>aç");
                     String selectCombat = input.nextLine().toUpperCase();
-                    if (selectCombat.equals("V") && this.getObstacle().getHealth() > 0) {
-                        System.out.println("Siz Vurdunuz !");
+                    if (selectCombat.equals("V")){
+                        System.out.println("Siz vurdunuz !");
                         this.getObstacle().setHealth(this.obstacle.getHealth() - this.getPlayer().getTotalDamage());
                         afterHit();
+                        if (this.getObstacle().getHealth()>0){
+                            System.out.println();
+                            System.out.println("Canavar size vurdu !");
+                            obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
+                            if (obstacleDamage < 0) {
+                                obstacleDamage = 0;
+                            }
+                            this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
+                            afterHit();
+                        }
                     }else {
                         return false;
                     }
-
-
                 }
+
                 //bitişi
             }
 
@@ -110,6 +118,7 @@ public abstract class BattleLoc extends Location {
     }
 
 
+    //hit sonrasi info
     public void afterHit() {
         System.out.println("Canınız: " + this.getPlayer().getHealth());
         System.out.println(this.getObstacle().getName() + " Canı: " + this.getObstacle().getHealth());
@@ -138,13 +147,12 @@ public abstract class BattleLoc extends Location {
     }
 
 
+    //İlk Başlayanı Belirleyen metot
     public void whoStarting() {
         Random random = new Random();
         int randomNum = random.nextInt(2);
 
         //seçimin yapılacagı yer
-
-
         if (randomNum == 0) {
             startingObject = this.getPlayer();
         } else {
@@ -154,8 +162,27 @@ public abstract class BattleLoc extends Location {
 
     public int randomObstacleNumber() {
         Random r = new Random();
-        return r.nextInt(this.getMaxObstacle()) + 1;
+        if (this.getObstacle().getName().equals("Yılan")) {
+            return r.nextInt(5) + 1;
+        } else {
+            return r.nextInt(this.getMaxObstacle()) + 1;
+        }
     }
+
+
+    //Ödül Belirleme
+    /*public Award isAward() {
+        if (this.getLocName().equals("Mağara")){
+            this.getAward()= new Award("Food",1);
+        } else if (this.getLocName().equals("Orman")) {
+            this.getAward()=;
+        }
+        return null;
+    }
+
+     */
+
+
 
 
     public Obstacle getObstacle() {

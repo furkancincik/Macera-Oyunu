@@ -22,6 +22,7 @@ public class Game {
             System.out.println("3- Mağara(Zombi)");
             System.out.println("4- Orman(Vampir)");
             System.out.println("5- Nehir(Ayı)");
+            System.out.println("6- Maden Ocağı(Yılan/*Ganimet*)");
             System.out.println("0- Oyunu Sonlandır");
             System.out.println();
             System.out.println("Lutfen Gitmek İstediğiniz Bölgeyi Seçiniz ");
@@ -50,6 +51,8 @@ public class Game {
                 case 5:
                     location=new River(player);
                     break;
+                case 6:
+                    location=new Mine(player);
                 default:
                     System.out.println("Lütfen Geçerli Bir Giriş Yapiniz.");
             }
