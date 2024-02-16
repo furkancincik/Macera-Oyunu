@@ -7,6 +7,7 @@ public abstract class BattleLoc extends Location {
     private int maxObstacle;
     Object startingObject = new Object();
 
+
     public BattleLoc(Player player, String locName, Obstacle obstacle, String award, int maxObstacle) {
         super(player, locName);
         this.obstacle = obstacle;
@@ -89,11 +90,11 @@ public abstract class BattleLoc extends Location {
                     }
                     System.out.println("<V>ur veya <K>aç");
                     String selectCombat = input.nextLine().toUpperCase();
-                    if (selectCombat.equals("V")){
+                    if (selectCombat.equals("V")) {
                         System.out.println("Siz vurdunuz !");
                         this.getObstacle().setHealth(this.obstacle.getHealth() - this.getPlayer().getTotalDamage());
                         afterHit();
-                        if (this.getObstacle().getHealth()>0){
+                        if (this.getObstacle().getHealth() > 0) {
                             System.out.println();
                             System.out.println("Canavar size vurdu !");
                             obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
@@ -103,7 +104,7 @@ public abstract class BattleLoc extends Location {
                             this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
                             afterHit();
                         }
-                    }else {
+                    } else {
                         return false;
                     }
                 }
@@ -112,6 +113,7 @@ public abstract class BattleLoc extends Location {
             }
 
         }
+        isAwarded();
 
 
         return true;
@@ -170,19 +172,71 @@ public abstract class BattleLoc extends Location {
     }
 
 
-    //Ödül Belirleme
-    /*public Award isAward() {
-        if (this.getLocName().equals("Mağara")){
-            this.getAward()= new Award("Food",1);
-        } else if (this.getLocName().equals("Orman")) {
-            this.getAward()=;
+    //Ödül İhtimali Belirleme
+    public Award determineAward() {
+        Random random = new Random();
+        int chance = random.nextInt(100); // 0 ile 99 arasında rastgele bir sayı alır
+
+        if (chance < 15) {
+            return new Award("Tüfek", 1, 3); // Tüfek kazanma ihtimali %15
+        } else if (chance < 35) {
+            return new Award("Kılıç", 1, 2); // Kılıç kazanma ihtimali %20
+        } else if (chance < 65) {
+            return new Award("Tabanca", 1, 1); // Tabanca kazanma ihtimali %30
+        } else if (chance < 80) {
+            return new Award("Ağır Zırh", 1, 5); // Ağır Zırh kazanma ihtimali %15
+        } else if (chance < 95) {
+            return new Award("Orta Zırh", 1, 3); // Orta Zırh kazanma ihtimali %15
+        } else if (chance < 100) {
+            return new Award("Hafif Zırh", 1, 1); // Hafif Zırh kazanma ihtimali %20
+        } else {
+            return null; // Hiçbir şey kazanamama ihtimali %5
         }
-        return null;
     }
 
-     */
+
+    //Ödül Çağırdık
+    public void isAwarded() {
+        Award award = determineAward();
+        boolean alreadyHasAward= false;
+        if (award != null) {
+            // Ödül kazanıldı, burada ödül ile yapılacak işlemleri gerçekleştirdik
+
+            if (award.getName().equals("Tüfek") || award.getName().equals("Kılıç") || award.getName().equals("Tabanca")) {
+                // Silah ödülü kazanıldıysa
+                Weapon currentWeapon = this.getPlayer().getInventory().getWeapon();
+                currentWeapon.setDamage(currentWeapon.getDamage() + award.getDamageOrBlock());
+                System.out.println("Ödül kazanıldı: " + award.getName() + " (Hasar: " + award.getDamageOrBlock() + ")");
+                if (currentWeapon.getName().equals(award.getName())) {
+                    alreadyHasAward = true;
+                } else {
+                    currentWeapon.setDamage(currentWeapon.getDamage() + award.getDamageOrBlock());
+                }
+            } else if (award.getName().equals("Ağır Zırh") || award.getName().equals("Orta Zırh") || award.getName().equals("Hafif Zırh")) {
+                // Zırh ödülü kazanıldıysa
+                Armor currentArmor = this.getPlayer().getInventory().getArmor();
+                currentArmor.setBlock(currentArmor.getBlock() + award.getDamageOrBlock());
+                if (currentArmor.getName().equals(award.getName())) {
+                    alreadyHasAward = true;
+                } else {
+                    currentArmor.setBlock(currentArmor.getBlock() + award.getDamageOrBlock());
+                }
+
+            }
+            if (!alreadyHasAward) {
+                System.out.println("Ödül kazanıldı: " + award.getName() + " (Zırh: " + award.getDamageOrBlock() + ")");
+            } else {
+                System.out.println("Zaten bu ödülü bulunduğunuz için tekrar kazanılmadı: " + award.getName());
+            }
 
 
+            System.out.println();
+        } else {
+            // Hiçbir şey kazanılmadı
+            System.out.println("Ödül kazanılamadı.");
+            System.out.println();
+        }
+    }
 
 
     public Obstacle getObstacle() {
