@@ -108,13 +108,11 @@ public abstract class BattleLoc extends Location {
                         return false;
                     }
                 }
-
                 //bitişi
             }
 
         }
         isAwarded();
-
 
         return true;
     }
